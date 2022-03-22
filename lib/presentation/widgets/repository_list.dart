@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_app/common/app_colors.dart';
 import 'package:github_app/data/model/repository_model.dart';
+import 'package:github_app/presentation/cubit/repo_cubit.dart';
 import 'package:github_app/presentation/pages/repo_details.dart';
-import 'package:github_app/presentation/pages/user_details_page.dart';
+import 'package:github_app/presentation/widgets/user_image.dart';
 
 class RepositoryList extends StatelessWidget {
   const RepositoryList({
@@ -25,9 +27,17 @@ class RepositoryList extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RepoDetailsPage()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        create: (context) => RepoCubit(),
+                        child: RepoDetailsPage(
+                          owner: repositoryModel.owner.userName,
+                          repo: repositoryModel.name,
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   margin: index == 0 ? const EdgeInsets.only(top: 160) : null,
@@ -37,34 +47,8 @@ class RepositoryList extends StatelessWidget {
                       : AppColors.brandPrimaryDark,
                   child: Row(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const UserDetailsPage()));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(2.5),
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: AppColors.brandWhite,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              repositoryModel.owner.avatarUrl,
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      UserImage(imageUrl: repositoryModel.owner.avatarUrl),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,9 +58,7 @@ class RepositoryList extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
                             Text(
                               'Owner: ${repositoryModel.owner.userName}',
                               maxLines: 1,
