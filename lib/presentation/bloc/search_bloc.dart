@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:github_app/common/c.dart';
 import 'package:github_app/data/model/repository_model.dart';
 import 'package:github_app/domain/usecases/search_for_repository_usecase.dart';
@@ -13,8 +14,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SortTypes sortType = SortTypes.none;
 
   SearchBloc() : super(SearchInitial()) {
-    on<SearchForUsers>((event, emit) {
-      // TODO: implement event handler
+    on<SortExistingData>((event, emit) {
+      if (listOfSearchRepositories.isNotEmpty) {
+        sortListOfRepositories(event.sort);
+        emit(SearchFinished(UniqueKey(), listOfSearchRepositories));
+      }
     });
     on<SearchForRepository>((event, emit) async {
       emit(SearchLoading());
@@ -23,12 +27,32 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       var either = await getIt<SearchForRepositoryUsecase>().call(query);
       if (either.isRight()) {
         either.fold((l) => null, (r) => listOfSearchRepositories = r);
-        emit(SearchFinished(listOfSearchRepositories));
+        emit(SearchFinished(UniqueKey(), listOfSearchRepositories));
       } else {
         print('Left');
       }
     });
   }
+
+  void sortListOfRepositories(SortTypes type) {
+    switch (type) {
+      case SortTypes.mostStars:
+        listOfSearchRepositories
+            .sort((a, b) => b.numberOfStars.compareTo(a.numberOfStars));
+        break;
+      case SortTypes.mostForks:
+        listOfSearchRepositories
+            .sort((a, b) => b.numberOfForks.compareTo(a.numberOfForks));
+        break;
+      case SortTypes.mostUpdated:
+        listOfSearchRepositories
+            .sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+        break;
+      default:
+        break;
+    }
+  }
+
   String getSortQuery(SortTypes sortType) {
     String query = '';
     switch (sortType) {

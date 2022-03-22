@@ -51,6 +51,7 @@ dependencies:
   
   #Misc
   dartz: ^0.10.1
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_test:

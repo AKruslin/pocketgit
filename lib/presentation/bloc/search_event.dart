@@ -21,3 +21,12 @@ class SearchForRepository extends SearchEvent {
 }
 
 class LoadMoreData extends SearchEvent {}
+
+class SortExistingData extends SearchEvent {
+  final SortTypes sort;
+  const SortExistingData({
+    required this.sort,
+  });
+  @override
+  List<Object> get props => [sort];
+}

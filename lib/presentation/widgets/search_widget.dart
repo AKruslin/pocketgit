@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_app/common/app_colors.dart';
 import 'package:github_app/common/c.dart';
 import 'package:github_app/presentation/bloc/search_bloc.dart';
@@ -75,6 +76,8 @@ class _SearchWidgetState extends State<SearchWidget> {
                     setState(() {
                       sortType = newSortValue as SortTypes;
                     });
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(SortExistingData(sort: sortType));
                   },
                   value: sortType,
                 ),
