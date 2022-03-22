@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:github_app/common/app_colors.dart';
 import 'package:github_app/data/model/repository_model.dart';
+import 'package:github_app/presentation/pages/repo_details.dart';
+import 'package:github_app/presentation/pages/user_details_page.dart';
 
 class RepositoryList extends StatelessWidget {
   const RepositoryList({
@@ -22,8 +24,10 @@ class RepositoryList extends StatelessWidget {
               RepositoryModel repositoryModel = searchList[index];
               return GestureDetector(
                 onTap: () {
-                  //TODO: open RepositoryDetailsPage
-                  print('REPO-Details');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RepoDetailsPage()));
                 },
                 child: Container(
                   margin: index == 0 ? const EdgeInsets.only(top: 160) : null,
@@ -35,8 +39,11 @@ class RepositoryList extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          //TODO:open UserDetailsPage
-                          print('USER-Details');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const UserDetailsPage()));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(2.5),

@@ -89,6 +89,10 @@ class _SearchWidgetState extends State<SearchWidget> {
                   sort: sortType,
                 ));
               },
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0)))),
               child: const Text('Search')),
           const SizedBox(height: 5),
         ],

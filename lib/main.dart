@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github_app/presentation/pages/repo_details.dart';
 import 'injection/injection.dart';
 import 'presentation/bloc/search_bloc.dart';
 import 'presentation/pages/search_page.dart';
@@ -14,15 +15,17 @@ class PocketGit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: const ColorScheme.dark(
-          primary: Colors.blue,
+        theme: ThemeData(
+          colorScheme: const ColorScheme.dark(
+            primary: Colors.blue,
+          ),
         ),
-      ),
-      home: BlocProvider(
-        create: (context) => SearchBloc(),
-        child: const SearchPage(),
-      ),
-    );
+        initialRoute: '/',
+        routes: {
+          '/': (context) => BlocProvider(
+                create: (context) => SearchBloc(),
+                child: const SearchPage(),
+              ),
+        });
   }
 }
