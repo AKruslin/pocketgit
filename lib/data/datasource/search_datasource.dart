@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 abstract class SearchDatasource {
   Future<List<RepositoryModel>> searchForRepository(String query);
+  Future<List<RepositoryModel>> getUserRepositories(String query);
   Future<RepositoryDetails> getRepositoryDetails(String query);
   Future<UserDetails> getUserDetails(String query);
 }
@@ -54,6 +55,22 @@ class SearchDatasourceImpl implements SearchDatasource {
       var decoded = jsonDecode(response.body);
       UserDetails userDetails = UserDetails.fromJson(decoded);
       return userDetails;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<List<RepositoryModel>> getUserRepositories(String query) async {
+    try {
+      var repoUri = Uri.parse('https://api.github.com/users/$query/repos');
+      var response = await http.get(repoUri);
+      var decoded = jsonDecode(response.body);
+      List<RepositoryModel> listOfRepositories = [];
+      for (var rawRepo in decoded) {
+        listOfRepositories.add(RepositoryModel.fromJson(rawRepo));
+      }
+      return listOfRepositories;
     } catch (e) {
       throw Exception();
     }

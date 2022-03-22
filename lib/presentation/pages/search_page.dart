@@ -30,8 +30,17 @@ class _SearchPageState extends State<SearchPage> {
                       ? const Center(
                           child: Text('NO RESULTS !'),
                         )
-                      : RepositoryList(
-                          searchList: state.searchList,
+                      : Column(
+                          children: [
+                            const SizedBox(
+                              height: 160,
+                            ),
+                            Expanded(
+                              child: RepositoryList(
+                                repositoryList: state.searchList,
+                              ),
+                            ),
+                          ],
                         );
                 }
                 if (state is SearchLoading) {

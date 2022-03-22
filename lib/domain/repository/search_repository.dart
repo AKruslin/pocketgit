@@ -5,6 +5,7 @@ import 'package:github_app/data/model/user_details.dart';
 
 abstract class SearchRepository {
   Future<Either<Exception, List<RepositoryModel>>> searchForRepository(String query);
+  Future<Either<Exception, List<RepositoryModel>>> getUserRepositories(String query);
   Future<Either<Exception,RepositoryDetails>> getRepositoryDetails(String query);
   Future<Either<Exception,UserDetails>> getUserDetails(String query);
 }

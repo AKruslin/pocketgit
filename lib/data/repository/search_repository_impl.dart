@@ -41,4 +41,14 @@ class SearchRepositoryImpl implements SearchRepository {
       return Left(Exception());
     }
   }
+
+  @override
+  Future<Either<Exception, List<RepositoryModel>>> getUserRepositories(
+      String query) async {
+    try {
+      return Right(await searchDatasource.getUserRepositories(query));
+    } catch (e) {
+      return Left(Exception());
+    }
+  }
 }

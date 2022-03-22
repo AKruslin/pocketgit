@@ -15,8 +15,10 @@ class UserDetailsLoading extends UserState {}
 
 class UserDetailsFinished extends UserState {
   final UserDetails userDetails;
+  final List<RepositoryModel> listOfUserRepositories;
   const UserDetailsFinished({
     required this.userDetails,
+    required this.listOfUserRepositories,
   });
   @override
   List<Object> get props => [userDetails.createdAt];

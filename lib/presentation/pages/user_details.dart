@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_app/common/widgets/custom_backbutton.dart';
 import 'package:github_app/data/model/user_details.dart';
 import 'package:github_app/presentation/cubit/user_cubit.dart';
-import 'package:github_app/presentation/widgets/open_in_web.dart';
-import 'package:github_app/presentation/widgets/user_image.dart';
+import 'package:github_app/presentation/widgets/repository_card.dart';
+import 'package:github_app/presentation/widgets/user_details_description.dart';
+import 'package:github_app/presentation/widgets/user_details_header.dart';
 
 class UserDetailsPage extends StatefulWidget {
   const UserDetailsPage({Key? key, required this.owner}) : super(key: key);
@@ -27,8 +28,8 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     return Scaffold(
       body: SafeArea(
         bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               BlocBuilder<UserCubit, UserState>(
@@ -36,72 +37,41 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                   if (state is UserDetailsFinished) {
                     UserDetails userDetails = state.userDetails;
                     Map<String, dynamic> userDetailsMap = userDetails.toMap();
+                    int index = -1;
                     var listOfKeys = userDetails.getListOfKeys();
-                    return Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 20, left: 45),
-                          child: Text(
-                            userDetails.userName,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 32),
-                          ),
-                        ),
-                        Row(
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: [
-                            UserImage(
-                              imageUrl: userDetails.avatarUrl,
-                              name: userDetails.userName,
-                              isActive: false,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Name: ${userDetails.realName}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'Type: ${userDetails.type}',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ],
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(bottom: 20, left: 45),
+                              child: Text(
+                                userDetails.userName,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 32),
                               ),
                             ),
-                            OpenInWebButton(url: userDetails.browserUrl),
+                            UserHeader(userDetails: userDetails),
+                            const SizedBox(height: 20),
+                            UserDetailsDescription(
+                                userDetailsMap: userDetailsMap,
+                                listOfKeys: listOfKeys),
+                            Column(
+                              children: [
+                                ...state.listOfUserRepositories
+                                    .map((repository) {
+                                  index++;
+                                  return RepositoryCard(
+                                      repositoryItem: repository, index: index);
+                                }),
+                                const SizedBox(height: 50),
+                              ],
+                            )
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: userDetailsMap.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text('${listOfKeys[index]}:')),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        '${userDetailsMap[listOfKeys[index]]}',
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            })
-                      ],
+                      ),
                     );
                   }
                   if (state is UserDetailsLoading) {
@@ -111,15 +81,19 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                   }
                   if (state is UserDetailsError) {
                     return const Center(
-                      child: Text('Error while loading repo details.'),
+                      child: Text('Error while loading user details.'),
                     );
                   }
                   return Container();
                 },
               ),
-              CustomBackButton(
-                func: () =>
-                    Navigator.popUntil(context, ModalRoute.withName('/')),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16),
+                child: CustomBackButton(
+                  func: () =>
+                      Navigator.popUntil(context, ModalRoute.withName('/')),
+                ),
               )
             ],
           ),
