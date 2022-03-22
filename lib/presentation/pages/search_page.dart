@@ -26,9 +26,13 @@ class _SearchPageState extends State<SearchPage> {
             BlocBuilder<SearchBloc, SearchState>(
               builder: (context, state) {
                 if (state is SearchFinished) {
-                  return RepositoryList(
-                    searchList: state.searchList,
-                  );
+                  return state.searchList.isEmpty
+                      ? const Center(
+                          child: Text('NO RESULTS !'),
+                        )
+                      : RepositoryList(
+                          searchList: state.searchList,
+                        );
                 }
                 if (state is SearchLoading) {
                   return const Center(
@@ -47,4 +51,3 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
-
