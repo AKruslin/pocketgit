@@ -8,9 +8,12 @@ class Owner {
   String userName;
   @JsonKey(name: 'avatar_url')
   String avatarUrl;
+  @JsonKey(defaultValue: 'n/a')
+  String type;
   Owner({
     required this.userName,
     required this.avatarUrl,
+    required this.type,
   });
 
   factory Owner.fromJson(Map<String, dynamic> json) => _$OwnerFromJson(json);

@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:github_app/data/model/repository_details.dart';
 import 'package:github_app/data/model/repository_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 
 abstract class SearchDatasource {
   Future<List<RepositoryModel>> searchForRepository(String query);
+  Future<RepositoryDetails> getRepositoryDetails(String query);
 }
 
 @LazySingleton(as: SearchDatasource)
@@ -24,6 +26,19 @@ class SearchDatasourceImpl implements SearchDatasource {
         listOfRepositories.add(RepositoryModel.fromJson(rawRepo));
       }
       return listOfRepositories;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<RepositoryDetails> getRepositoryDetails(String query) async {
+    try {
+      var repoUri = Uri.parse('https://api.github.com/repos/$query');
+      var response = await http.get(repoUri);
+      var decoded = jsonDecode(response.body);
+      RepositoryDetails repoDetails = RepositoryDetails.fromJson(decoded);
+      return repoDetails;
     } catch (e) {
       throw Exception();
     }

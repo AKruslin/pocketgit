@@ -11,9 +11,9 @@ RepositoryModel _$RepositoryModelFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       owner: Owner.fromJson(json['owner'] as Map<String, dynamic>),
       updatedAt: json['updated_at'] as String,
-      numberOfStars: json['stargazers_count'] as int? ?? 0,
-      numberOfForks: json['forks_count'] as int? ?? 0,
-      numberOfIssues: json['open_issues_count'] as int? ?? 0,
+      numberOfStars: json['stargazers_count'] as int,
+      numberOfForks: json['forks_count'] as int,
+      numberOfIssues: json['open_issues_count'] as int,
     );
 
 Map<String, dynamic> _$RepositoryModelToJson(RepositoryModel instance) =>

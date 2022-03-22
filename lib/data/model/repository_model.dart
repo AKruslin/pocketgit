@@ -9,11 +9,11 @@ class RepositoryModel {
   Owner owner;
   @JsonKey(name: 'updated_at')
   String updatedAt;
-  @JsonKey(name: 'stargazers_count', defaultValue: 0)
+  @JsonKey(name: 'stargazers_count')
   int numberOfStars;
-  @JsonKey(name: 'forks_count', defaultValue: 0)
+  @JsonKey(name: 'forks_count')
   int numberOfForks;
-  @JsonKey(name: 'open_issues_count', defaultValue: 0)
+  @JsonKey(name: 'open_issues_count')
   int numberOfIssues;
   RepositoryModel({
     required this.name,
