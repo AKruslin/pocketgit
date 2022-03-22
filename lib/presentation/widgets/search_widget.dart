@@ -44,6 +44,9 @@ class _SearchWidgetState extends State<SearchWidget> {
                 width: 150,
                 child: TextField(
                   controller: textEditingController,
+                  decoration: const InputDecoration().copyWith(
+                    hintText: 'Enter name of repo',
+                  ),
                 ),
               ),
               const SizedBox(width: 20),
