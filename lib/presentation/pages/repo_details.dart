@@ -51,7 +51,10 @@ class _RepoDetailsPageState extends State<RepoDetailsPage> {
                         ),
                         Row(
                           children: [
-                            UserImage(imageUrl: repoDetails.owner.avatarUrl),
+                            UserImage(
+                              imageUrl: repoDetails.owner.avatarUrl,
+                              name: repoDetails.owner.userName,
+                            ),
                             const SizedBox(width: 10),
                             Expanded(
                                 child: Column(
@@ -107,12 +110,8 @@ class _RepoDetailsPageState extends State<RepoDetailsPage> {
                   return Container();
                 },
               ),
-              Row(
-                children: [
-                  CustomBackButton(
-                    func: () => Navigator.pop(context),
-                  ),
-                ],
+              CustomBackButton(
+                func: () => Navigator.pop(context),
               )
             ],
           ),

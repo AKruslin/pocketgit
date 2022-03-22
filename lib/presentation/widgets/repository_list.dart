@@ -47,7 +47,10 @@ class RepositoryList extends StatelessWidget {
                       : AppColors.brandPrimaryDark,
                   child: Row(
                     children: [
-                      UserImage(imageUrl: repositoryModel.owner.avatarUrl),
+                      UserImage(
+                        imageUrl: repositoryModel.owner.avatarUrl,
+                        name: repositoryModel.owner.userName,
+                      ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Column(
