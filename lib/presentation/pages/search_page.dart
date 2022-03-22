@@ -33,7 +33,7 @@ class _SearchPageState extends State<SearchPage> {
                       : Column(
                           children: [
                             const SizedBox(
-                              height: 160,
+                              height: 145,
                             ),
                             Expanded(
                               child: RepositoryList(

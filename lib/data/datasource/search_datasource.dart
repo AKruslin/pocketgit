@@ -16,12 +16,12 @@ abstract class SearchDatasource {
 @LazySingleton(as: SearchDatasource)
 class SearchDatasourceImpl implements SearchDatasource {
   SearchDatasourceImpl();
-
+  static const baseUrl = 'https://api.github.com';
   @override
   Future<List<RepositoryModel>> searchForRepository(String query) async {
     try {
-      var repoUri = Uri.parse(
-          'https://api.github.com/search/repositories?$query&page=1&per_page=100');
+      var repoUri =
+          Uri.parse('$baseUrl/search/repositories?$query&page=1&per_page=100');
       var response = await http.get(repoUri);
       var decoded = jsonDecode(response.body);
       List<RepositoryModel> listOfRepositories = [];
@@ -37,7 +37,7 @@ class SearchDatasourceImpl implements SearchDatasource {
   @override
   Future<RepositoryDetails> getRepositoryDetails(String query) async {
     try {
-      var repoUri = Uri.parse('https://api.github.com/repos/$query');
+      var repoUri = Uri.parse('$baseUrl/repos/$query');
       var response = await http.get(repoUri);
       var decoded = jsonDecode(response.body);
       RepositoryDetails repoDetails = RepositoryDetails.fromJson(decoded);
@@ -50,7 +50,7 @@ class SearchDatasourceImpl implements SearchDatasource {
   @override
   Future<UserDetails> getUserDetails(String query) async {
     try {
-      var repoUri = Uri.parse('https://api.github.com/users/$query');
+      var repoUri = Uri.parse('$baseUrl/users/$query');
       var response = await http.get(repoUri);
       var decoded = jsonDecode(response.body);
       UserDetails userDetails = UserDetails.fromJson(decoded);
@@ -63,7 +63,7 @@ class SearchDatasourceImpl implements SearchDatasource {
   @override
   Future<List<RepositoryModel>> getUserRepositories(String query) async {
     try {
-      var repoUri = Uri.parse('https://api.github.com/users/$query/repos');
+      var repoUri = Uri.parse('$baseUrl/users/$query/repos');
       var response = await http.get(repoUri);
       var decoded = jsonDecode(response.body);
       List<RepositoryModel> listOfRepositories = [];
