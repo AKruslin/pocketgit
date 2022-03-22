@@ -1,16 +1,45 @@
-# github_app
+# pocket_github_app
 
-A new Flutter project.
+Simple Flutter project that is using best practices and architecture.
+
+**Project contains**:
+
+- dependency injection (**GetIt** + **injectable**)
+- bloc architecture (**BLoC**)
+- networking (**http**)
+- parsing json response (**JsonSerializable**)
+- opening in browser (**Url launcher**)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Flutter version: **2.10.3** (**stable**)
 
-A few resources to get you started if this is your first Flutter project:
+For best user experience run app on **iOS** and **Android** platforms, but you can also run it on Web - **UI** is **NOT configured** for Web platform.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## App flow
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Enter repository in search text field name for example type "flutter"
+
+2. Optional - pick sorting method for search
+
+3. Press search button to fetch data about wanted repository if it exists
+
+4. When data is loaded either click on user image to open **User details** or click on body of a repository card to open Repository details
+
+### When in User details
+
+1. There should be shown data about github user.
+
+2. Clicking on open in web will open this user in your web browser.
+
+3. Clicking on one repository from repository list on the lower part of the page will open Repository details just like on Search page.
+
+### When in Repository details
+
+1. There should be shown data about github repository.
+
+2. Clicking on open in web will open this repository in your web browser.
+
+### Communication path between UI and Data
+
+- UI -> BLoC -> Usecase -> Repository -> Datasource
